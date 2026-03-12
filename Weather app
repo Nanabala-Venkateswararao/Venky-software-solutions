@@ -1,0 +1,18 @@
+import streamlit as st
+import requests
+
+st.title("Weather App")
+city = st.text_input("Enter city name:")
+
+if st.button("Get Weather"):
+    api_key = "YOUR_API_KEY"  # Get from openweathermap.org
+    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
+    response = requests.get(url)
+    data = response.json()
+
+    if response.status_code == 200:
+        st.metric("Temperature", f"{data['main']['temp']}°C")
+        st.metric("Humidity", f"{data['main']['humidity']}%")
+        st.write(f"**Condition:** {data['weather'][0]['description']}")
+    else:
+        st.error("City not found!")
